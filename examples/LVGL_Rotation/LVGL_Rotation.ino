@@ -22,32 +22,32 @@ uint8_t rotation = 1;
 
 const char *formart_string = "#0000ff X:%d#\n #ff00ff Y:%d#\n #f00f00 Rotation:%d#\n #00ff00 Size:%s# ";
 
-void setRotation()
-{
-    amoled.setRotation(rotation++);
-    rotation %= 4;
-    lv_disp_drv_t *drv = lv_disp_get_default()->driver;
-    drv->hor_res = amoled.width();
-    drv->ver_res = amoled.height();
-    lv_disp_drv_update(lv_disp_get_default(), drv);
-}
+// void setRotation()
+// {
+//     amoled.setRotation(rotation++);
+//     rotation %= 4;
+//     lv_disp_drv_t *drv = lv_disp_get_default()->driver;
+//     drv->hor_res = amoled.width();
+//     drv->ver_res = amoled.height();
+//     lv_disp_drv_update(lv_disp_get_default(), drv);
+// }
 
 void handleEvent(AceButton * /* button */, uint8_t eventType,
                  uint8_t /* buttonState */)
 {
     switch (eventType) {
     case AceButton::kEventPressed:
-        setRotation();
+        // setRotation();
         break;
     default: break;
     }
 }
 
 
-static void event_cb(lv_event_t *e)
-{
-    setRotation();
-}
+// static void event_cb(lv_event_t *e)
+// {
+//     setRotation();
+// }
 
 
 
@@ -86,29 +86,16 @@ void setup(void)
     lv_label_set_text(label2, "YR-Design test");
     lv_obj_align(label2, LV_ALIGN_CENTER, 0, 40);
 
-    // Only 1.91 Inch AMOLED board support
-    amoled.setHomeButtonCallback([](void *ptr) {
-        Serial.println("Home key pressed!");
-        static uint32_t checkMs = 0;
-        if (millis() > checkMs) {
-            lv_label_set_text(label2, "Home Pressed");
-        }
-        checkMs = millis() + 200;
-        lv_timer_create([](lv_timer_t *t) {
-            lv_label_set_text(label2, "Press the yellow touch button on the screen to trigger");
-            lv_timer_del(t);
-        }, 2000, NULL);
-    }, NULL);
-
+    
     lv_obj_t *btn = lv_btn_create(lv_scr_act());
     lv_obj_t *label_str = lv_label_create(btn);
     lv_label_set_text(label_str, "setRotation");
     lv_obj_align(btn, LV_ALIGN_CENTER, 0, 80);
-    lv_obj_add_event_cb(btn, event_cb, LV_EVENT_CLICKED, NULL);
+    // lv_obj_add_event_cb(btn, event_cb, LV_EVENT_CLICKED, NULL);
 
-    //Initial BOOT button, used as setting direction trigger
-    pinMode(btnPin, INPUT_PULLUP);
-    button.setEventHandler(handleEvent);
+    // //Initial BOOT button, used as setting direction trigger
+    // pinMode(btnPin, INPUT_PULLUP);
+    // button.setEventHandler(handleEvent);
 }
 
 void loop()
